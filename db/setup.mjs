@@ -71,11 +71,11 @@ async function image(key) {
 
 await db.connect();
 await q(fs.readFileSync(path.join(here, "schema.sql"), "utf8"));
-// Palette migration: move sample slides still on an older theme to the tech palette.
+// Palette migration: move sample slides still on an older theme to the studio palette.
 await q(`UPDATE slides s SET bg_from=v.a, bg_to=v.b, glow=v.g FROM (VALUES
-  (0,'#0a1428','#1e3a8a','#22d3ee'),(1,'#0a1020','#312e81','#818cf8'),(2,'#071a2f','#0e4a6e','#38bdf8'),
-  (3,'#0a1428','#134e4a','#2dd4bf'),(4,'#0a1428','#1e293b','#60a5fa')) v(i,a,b,g)
-  WHERE s.sort=v.i AND lower(s.glow) IN ('#19d3c5','#d4af37','#ffc61a','#ffffff','#ffe27a')`);
+  (0,'#fbfbfd','#ededf0','#0071e3'),(1,'#000000','#1d1d1f','#7a3cff'),(2,'#fbfbfd','#f0f0f3','#0071e3'),
+  (3,'#ffffff','#eef1f6','#2997ff'),(4,'#000000','#141416','#2997ff')) v(i,a,b,g)
+  WHERE s.sort=v.i AND lower(s.glow) IN ('#19d3c5','#d4af37','#ffc61a','#ffffff','#ffe27a','#22d3ee','#818cf8','#38bdf8','#2dd4bf','#60a5fa')`);
 console.log("Tables ready");
 
 const email = (process.env.ADMIN_EMAIL || "admin@entaliq.com.sa").toLowerCase();
@@ -104,11 +104,11 @@ else if (!(await q("SELECT 1 FROM categories LIMIT 1")).rowCount) {
        p.rev ? p.rev[0] : null, p.rev ? p.rev[1] : 0, img ? [img] : []]);
   }
   const S = [
-    ["h_legion", "/category/laptops?sub=legion", "#0a1428", "#1e3a8a", "#22d3ee", 7599],
-    ["h_aurora", "/category/gaming", "#0a1020", "#312e81", "#818cf8", 12999],
-    ["w_pro", "/category/apple", "#071a2f", "#0e4a6e", "#38bdf8", 9499],
-    ["h_xps", "/category/laptops?sub=xps", "#0a1428", "#134e4a", "#2dd4bf", 6999],
-    ["h_aw34", "/category/gmonitors", "#0a1428", "#1e293b", "#60a5fa", 3999],
+    ["h_legion", "/category/laptops?sub=legion", "#fbfbfd", "#ededf0", "#0071e3", 7599],
+    ["h_aurora", "/category/gaming", "#000000", "#1d1d1f", "#7a3cff", 12999],
+    ["w_pro", "/category/apple", "#fbfbfd", "#f0f0f3", "#0071e3", 9499],
+    ["h_xps", "/category/laptops?sub=xps", "#ffffff", "#eef1f6", "#2997ff", 6999],
+    ["h_aw34", "/category/gmonitors", "#000000", "#141416", "#2997ff", 3999],
   ];
   for (const [i, [img, link, a, b, glow, price]] of S.entries()) {
     const ar = data.slidesAr[i], en = data.slidesEn[i];

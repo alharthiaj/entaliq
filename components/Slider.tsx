@@ -5,6 +5,13 @@ import { fmt } from "@/lib/format";
 
 export type SlideView = { id: string; tag: string; title: string; text: string; image: string | null; photo: boolean; link: string; bgFrom: string; bgTo: string; glow: string; priceFrom: number | null };
 
+const isDark = (hex: string) => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
+  if (!m) return true;
+  const n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b < 140;
+};
+
 export default function Slider({ slides, labels }: { slides: SlideView[]; labels: { from: string; sar: string; shopNow: string; prev: string; next: string; rtl: boolean } }) {
   const [i, setI] = useState(0);
   const [auto, setAuto] = useState(true);
@@ -18,7 +25,7 @@ export default function Slider({ slides, labels }: { slides: SlideView[]; labels
   return (
     <div className="slider" aria-roledescription="carousel">
       {slides.map((s, k) => (
-        <div key={s.id} className={"slide" + (k === i ? " on" : "")} aria-hidden={k !== i}
+        <div key={s.id} className={"slide" + (k === i ? " on" : "") + (isDark(s.bgFrom) ? " dark" : "")} aria-hidden={k !== i}
           style={{ background: `linear-gradient(115deg, ${s.bgFrom} 0%, ${s.bgTo} 100%)`, ["--glow" as string]: s.glow }}>
           <div>
             {s.tag && <span className="tag">{s.tag}</span>}

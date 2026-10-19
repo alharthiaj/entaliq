@@ -40,8 +40,8 @@ export default function Header({ storeName, storeNameEn, cats, feat, freeOver }:
           <span><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7.5-7 9-4-1.5-7-5-7-9V6z" /></svg><b>{tr.warranty}</b></span>
         </div>
         <div className="tb-r">
-          <Link href="/track" style={{ color: "#fff" }}>{tr.track}</Link><span className="sep">|</span>
-          <a className="tb-lang" style={{ color: "#fff", border: "1px solid rgba(255,255,255,.28)", borderRadius: 999, padding: "1px 12px" }} href={`/api/lang?to=${lang === "ar" ? "en" : "ar"}&back=${encodeURIComponent(path)}`}>{tr.lang}</a>
+          <Link href="/track">{tr.track}</Link><span className="sep">|</span>
+          <a className="tb-lang" href={`/api/lang?to=${lang === "ar" ? "en" : "ar"}&back=${encodeURIComponent(path)}`}>{tr.lang}</a>
         </div>
       </div></div>
 

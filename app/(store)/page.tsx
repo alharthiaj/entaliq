@@ -7,7 +7,7 @@ import { getLang, t } from "@/lib/i18n";
 import { getBanners, getBrands, getCategories, getProducts, getSlides } from "@/lib/data";
 import { img } from "@/lib/format";
 
-const SHELF_BG = ["linear-gradient(160deg,#0a1428,#1e3a8a)", "linear-gradient(160deg,#0a1428,#0e4a6e)", "linear-gradient(160deg,#0a1428,#312e81)", "linear-gradient(160deg,#0a1428,#134e4a)", "linear-gradient(160deg,#0a1428,#1e293b)"];
+const SHELF_BG = ["#ffffff"];
 
 export default async function Home() {
   const lang = getLang();
@@ -24,19 +24,22 @@ export default async function Home() {
           slides={slides.map((s) => ({ id: s.id, tag: L(s.tag_ar, s.tag_en), title: L(s.title_ar, s.title_en), text: L(s.text_ar, s.text_en), image: s.image_id ? img(s.image_id) : null, photo: false, link: s.link, bgFrom: s.bg_from, bgTo: s.bg_to, glow: s.glow, priceFrom: s.price_from }))}
           labels={{ from: tr.from, sar: tr.sar, shopNow: tr.shopNow, prev: "Previous", next: "Next", rtl: lang === "ar" }}
         />
-        <div className="side-ban">
-          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(34,211,238,.22),transparent 55%),linear-gradient(140deg,#0a1428,#1e3a8a)" }}>
-            <div><h3>{L(banners.sideATitleAr, banners.sideATitleEn)}</h3><p>{L(banners.sideATextAr, banners.sideATextEn)}</p></div>
-            <Link href={banners.sideALink} className="sban-btn">{tr.shopNow}</Link>
-            {banners.sideA && <img src={img(banners.sideA)} alt="" />}
-          </div>
-          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(37,99,235,.28),transparent 55%),linear-gradient(140deg,#0a1428,#13254a)" }}>
-            <div><h3>{L(banners.sideBTitleAr, banners.sideBTitleEn)}</h3><p>{L(banners.sideBTextAr, banners.sideBTextEn)}</p></div>
-            <Link href={banners.sideBLink} className="sban-btn">{tr.shopNow}</Link>
-            {banners.sideB && <img src={img(banners.sideB)} alt="" />}
-          </div>
-        </div>
       </div>
+
+      <section className="duo">
+        <Link href={banners.sideALink} className="dark">
+          <h3>{L(banners.sideATitleAr, banners.sideATitleEn)}</h3>
+          <p>{L(banners.sideATextAr, banners.sideATextEn)}</p>
+          <span className="lnk">{tr.shopNow} {lang === "ar" ? "‹" : "›"}</span>
+          {banners.sideA && <img src={img(banners.sideA)} alt="" loading="lazy" />}
+        </Link>
+        <Link href={banners.sideBLink}>
+          <h3>{L(banners.sideBTitleAr, banners.sideBTitleEn)}</h3>
+          <p>{L(banners.sideBTextAr, banners.sideBTextEn)}</p>
+          <span className="lnk">{tr.shopNow} {lang === "ar" ? "‹" : "›"}</span>
+          {banners.sideB && <img src={img(banners.sideB)} alt="" loading="lazy" />}
+        </Link>
+      </section>
 
       {deals.length > 0 && (
         <section className="box">
