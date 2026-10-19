@@ -71,11 +71,11 @@ async function image(key) {
 
 await db.connect();
 await q(fs.readFileSync(path.join(here, "schema.sql"), "utf8"));
-// Palette migration: move sample slides still on an older theme to the cheerful palette.
+// Palette migration: move sample slides still on an older theme to the tech palette.
 await q(`UPDATE slides s SET bg_from=v.a, bg_to=v.b, glow=v.g FROM (VALUES
-  (0,'#0a8a4a','#16c172','#ffc61a'),(1,'#5b2bd6','#c04bd6','#ffc61a'),(2,'#1a73e8','#3fb4f5','#ffffff'),
-  (3,'#0d9488','#2dd4bf','#ffc61a'),(4,'#d6336c','#ff6b8b','#ffe27a')) v(i,a,b,g)
-  WHERE s.sort=v.i AND lower(s.glow) IN ('#19d3c5','#d4af37')`);
+  (0,'#0a1428','#1e3a8a','#22d3ee'),(1,'#0a1020','#312e81','#818cf8'),(2,'#071a2f','#0e4a6e','#38bdf8'),
+  (3,'#0a1428','#134e4a','#2dd4bf'),(4,'#0a1428','#1e293b','#60a5fa')) v(i,a,b,g)
+  WHERE s.sort=v.i AND lower(s.glow) IN ('#19d3c5','#d4af37','#ffc61a','#ffffff','#ffe27a')`);
 console.log("Tables ready");
 
 const email = (process.env.ADMIN_EMAIL || "admin@entaliq.com.sa").toLowerCase();
@@ -104,11 +104,11 @@ else if (!(await q("SELECT 1 FROM categories LIMIT 1")).rowCount) {
        p.rev ? p.rev[0] : null, p.rev ? p.rev[1] : 0, img ? [img] : []]);
   }
   const S = [
-    ["h_legion", "/category/laptops?sub=legion", "#0a8a4a", "#16c172", "#ffc61a", 7599],
-    ["h_aurora", "/category/gaming", "#5b2bd6", "#c04bd6", "#ffc61a", 12999],
-    ["w_pro", "/category/apple", "#1a73e8", "#3fb4f5", "#ffffff", 9499],
-    ["h_xps", "/category/laptops?sub=xps", "#0d9488", "#2dd4bf", "#ffc61a", 6999],
-    ["h_aw34", "/category/gmonitors", "#d6336c", "#ff6b8b", "#ffe27a", 3999],
+    ["h_legion", "/category/laptops?sub=legion", "#0a1428", "#1e3a8a", "#22d3ee", 7599],
+    ["h_aurora", "/category/gaming", "#0a1020", "#312e81", "#818cf8", 12999],
+    ["w_pro", "/category/apple", "#071a2f", "#0e4a6e", "#38bdf8", 9499],
+    ["h_xps", "/category/laptops?sub=xps", "#0a1428", "#134e4a", "#2dd4bf", 6999],
+    ["h_aw34", "/category/gmonitors", "#0a1428", "#1e293b", "#60a5fa", 3999],
   ];
   for (const [i, [img, link, a, b, glow, price]] of S.entries()) {
     const ar = data.slidesAr[i], en = data.slidesEn[i];
