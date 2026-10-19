@@ -7,7 +7,7 @@ import { getLang, t } from "@/lib/i18n";
 import { getBanners, getBrands, getCategories, getProducts, getSlides } from "@/lib/data";
 import { img } from "@/lib/format";
 
-const SHELF_BG = ["linear-gradient(160deg,#030b18,#0c272e)", "linear-gradient(160deg,#030b18,#063638)", "linear-gradient(160deg,#061329,#0c272e)", "linear-gradient(160deg,#030b18,#101e2a)", "linear-gradient(160deg,#071b22,#0b4d4c)"];
+const SHELF_BG = ["linear-gradient(160deg,#04140f,#0e2b22)", "linear-gradient(160deg,#04140f,#0b3d2c)", "linear-gradient(160deg,#071a14,#0e2b22)", "linear-gradient(160deg,#04140f,#13261f)", "linear-gradient(160deg,#08201a,#0f5a3c)"];
 
 export default async function Home() {
   const lang = getLang();
@@ -25,12 +25,12 @@ export default async function Home() {
           labels={{ from: tr.from, sar: tr.sar, shopNow: tr.shopNow, prev: "Previous", next: "Next", rtl: lang === "ar" }}
         />
         <div className="side-ban">
-          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(25,211,197,.22),transparent 55%),linear-gradient(140deg,#030b18,#0c272e)" }}>
+          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(212,175,55,.22),transparent 55%),linear-gradient(140deg,#04140f,#0e2b22)" }}>
             <div><h3>{L(banners.sideATitleAr, banners.sideATitleEn)}</h3><p>{L(banners.sideATextAr, banners.sideATextEn)}</p></div>
             <Link href={banners.sideALink} className="sban-btn">{tr.shopNow}</Link>
             {banners.sideA && <img src={img(banners.sideA)} alt="" />}
           </div>
-          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(25,211,197,.18),transparent 55%),linear-gradient(140deg,#061329,#063638)" }}>
+          <div className="sban" style={{ background: "radial-gradient(circle at 20% 80%,rgba(212,175,55,.18),transparent 55%),linear-gradient(140deg,#071a14,#0b3d2c)" }}>
             <div><h3>{L(banners.sideBTitleAr, banners.sideBTitleEn)}</h3><p>{L(banners.sideBTextAr, banners.sideBTextEn)}</p></div>
             <Link href={banners.sideBLink} className="sban-btn">{tr.shopNow}</Link>
             {banners.sideB && <img src={img(banners.sideB)} alt="" />}

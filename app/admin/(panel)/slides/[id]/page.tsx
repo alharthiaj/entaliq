@@ -9,7 +9,7 @@ import { Flash } from "../../ui";
 export const dynamic = "force-dynamic";
 export default async function EditSlide({ params, searchParams }: { params: { id: string }; searchParams: Record<string, string | undefined> }) {
   const isNew = params.id === "new";
-  const s: any = isNew ? { active: true, link: "/", bg_from: "#0a0f1f", bg_to: "#3a1f6b", glow: "#7c5cff", sort: 0 } : await one("SELECT * FROM slides WHERE id=$1", [/^[0-9a-f-]{36}$/i.test(params.id) ? params.id : "00000000-0000-0000-0000-000000000000"]);
+  const s: any = isNew ? { active: true, link: "/", bg_from: "#04140f", bg_to: "#0e2b22", glow: "#d4af37", sort: 0 } : await one("SELECT * FROM slides WHERE id=$1", [/^[0-9a-f-]{36}$/i.test(params.id) ? params.id : "00000000-0000-0000-0000-000000000000"]);
   if (!s) notFound();
   return (
     <>

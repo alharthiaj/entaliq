@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: { icon: "/icon.svg", apple: "/brand-mark.svg" }, openGraph: { images: ["/brand-mark.svg"] },
   };
 }
-export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#030b18" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#04140f" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const lang = getLang();

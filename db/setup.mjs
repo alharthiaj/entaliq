@@ -71,6 +71,11 @@ async function image(key) {
 
 await db.connect();
 await q(fs.readFileSync(path.join(here, "schema.sql"), "utf8"));
+// Palette migration (teal -> Saudi green & gold) for slides seeded with the old colors.
+await q(`UPDATE slides SET glow='#d4af37',
+  bg_from=CASE lower(bg_from) WHEN '#030b18' THEN '#04140f' ELSE bg_from END,
+  bg_to=CASE lower(bg_to) WHEN '#0c272e' THEN '#0e2b22' WHEN '#071b22' THEN '#08201a' WHEN '#101e2a' THEN '#13261f' WHEN '#063638' THEN '#0b3d2c' ELSE bg_to END
+  WHERE lower(glow)='#19d3c5'`);
 console.log("Tables ready");
 
 const email = (process.env.ADMIN_EMAIL || "admin@entaliq.com.sa").toLowerCase();
@@ -99,11 +104,11 @@ else if (!(await q("SELECT 1 FROM categories LIMIT 1")).rowCount) {
        p.rev ? p.rev[0] : null, p.rev ? p.rev[1] : 0, img ? [img] : []]);
   }
   const S = [
-    ["h_legion", "/category/laptops?sub=legion", "#030b18", "#0c272e", "#19d3c5", 7599],
-    ["h_aurora", "/category/gaming", "#030b18", "#071b22", "#19d3c5", 12999],
-    ["w_pro", "/category/apple", "#030b18", "#101e2a", "#19d3c5", 9499],
-    ["h_xps", "/category/laptops?sub=xps", "#030b18", "#063638", "#19d3c5", 6999],
-    ["h_aw34", "/category/gmonitors", "#030b18", "#0c272e", "#19d3c5", 3999],
+    ["h_legion", "/category/laptops?sub=legion", "#04140f", "#0e2b22", "#d4af37", 7599],
+    ["h_aurora", "/category/gaming", "#04140f", "#08201a", "#d4af37", 12999],
+    ["w_pro", "/category/apple", "#04140f", "#13261f", "#d4af37", 9499],
+    ["h_xps", "/category/laptops?sub=xps", "#04140f", "#0b3d2c", "#d4af37", 6999],
+    ["h_aw34", "/category/gmonitors", "#04140f", "#0e2b22", "#d4af37", 3999],
   ];
   for (const [i, [img, link, a, b, glow, price]] of S.entries()) {
     const ar = data.slidesAr[i], en = data.slidesEn[i];
