@@ -71,11 +71,11 @@ async function image(key) {
 
 await db.connect();
 await q(fs.readFileSync(path.join(here, "schema.sql"), "utf8"));
-// Palette migration (teal -> Saudi green & gold) for slides seeded with the old colors.
-await q(`UPDATE slides SET glow='#d4af37',
-  bg_from=CASE lower(bg_from) WHEN '#030b18' THEN '#04140f' ELSE bg_from END,
-  bg_to=CASE lower(bg_to) WHEN '#0c272e' THEN '#0e2b22' WHEN '#071b22' THEN '#08201a' WHEN '#101e2a' THEN '#13261f' WHEN '#063638' THEN '#0b3d2c' ELSE bg_to END
-  WHERE lower(glow)='#19d3c5'`);
+// Palette migration: move sample slides still on an older theme to the cheerful palette.
+await q(`UPDATE slides s SET bg_from=v.a, bg_to=v.b, glow=v.g FROM (VALUES
+  (0,'#0a8a4a','#16c172','#ffc61a'),(1,'#5b2bd6','#c04bd6','#ffc61a'),(2,'#1a73e8','#3fb4f5','#ffffff'),
+  (3,'#0d9488','#2dd4bf','#ffc61a'),(4,'#d6336c','#ff6b8b','#ffe27a')) v(i,a,b,g)
+  WHERE s.sort=v.i AND lower(s.glow) IN ('#19d3c5','#d4af37')`);
 console.log("Tables ready");
 
 const email = (process.env.ADMIN_EMAIL || "admin@entaliq.com.sa").toLowerCase();
@@ -104,11 +104,11 @@ else if (!(await q("SELECT 1 FROM categories LIMIT 1")).rowCount) {
        p.rev ? p.rev[0] : null, p.rev ? p.rev[1] : 0, img ? [img] : []]);
   }
   const S = [
-    ["h_legion", "/category/laptops?sub=legion", "#04140f", "#0e2b22", "#d4af37", 7599],
-    ["h_aurora", "/category/gaming", "#04140f", "#08201a", "#d4af37", 12999],
-    ["w_pro", "/category/apple", "#04140f", "#13261f", "#d4af37", 9499],
-    ["h_xps", "/category/laptops?sub=xps", "#04140f", "#0b3d2c", "#d4af37", 6999],
-    ["h_aw34", "/category/gmonitors", "#04140f", "#0e2b22", "#d4af37", 3999],
+    ["h_legion", "/category/laptops?sub=legion", "#0a8a4a", "#16c172", "#ffc61a", 7599],
+    ["h_aurora", "/category/gaming", "#5b2bd6", "#c04bd6", "#ffc61a", 12999],
+    ["w_pro", "/category/apple", "#1a73e8", "#3fb4f5", "#ffffff", 9499],
+    ["h_xps", "/category/laptops?sub=xps", "#0d9488", "#2dd4bf", "#ffc61a", 6999],
+    ["h_aw34", "/category/gmonitors", "#d6336c", "#ff6b8b", "#ffe27a", 3999],
   ];
   for (const [i, [img, link, a, b, glow, price]] of S.entries()) {
     const ar = data.slidesAr[i], en = data.slidesEn[i];
