@@ -119,7 +119,7 @@ else if (!(await q("SELECT 1 FROM categories LIMIT 1")).rowCount) {
 }
 
 const defaults = {
-  store: { nameAr: "انطلق للطاقة", nameEn: "Entaliq Energy", phone: "+966 5X XXX XXXX", whatsapp: "", email: "info@entaliq-store.com", addressAr: "الرياض، المملكة العربية السعودية", addressEn: "Riyadh, Saudi Arabia", hoursAr: "السبت – الخميس: ٩ ص – ١٠ م · الجمعة: مغلق", hoursEn: "Sat – Thu: 9am – 10pm · Friday: closed", cr: "", vatNo: "", x: "", instagram: "", snapchat: "", tiktok: "" },
+  store: { nameAr: "انطلق للطاقة", nameEn: "Entaliq Energy", phone: "+966 55 335 5395", whatsapp: "", email: "info@entaliq-store.com", addressAr: "الرياض، المملكة العربية السعودية", addressEn: "Riyadh, Saudi Arabia", hoursAr: "السبت – الخميس: ٩ ص – ١٠ م · الجمعة: مغلق", hoursEn: "Sat – Thu: 9am – 10pm · Friday: closed", cr: "", vatNo: "", x: "", instagram: "", snapchat: "", tiktok: "" },
   shipping: { flat: 25, freeOver: 500, codFee: 15, cities: ["الرياض","جدة","مكة المكرمة","المدينة المنورة","الدمام","الخبر","الظهران","الطائف","تبوك","بريدة","أبها","خميس مشيط","حائل","جازان","نجران","الجبيل","ينبع","الأحساء"] },
   payments: { card: true, cod: true, bank: true, bankName: "", iban: "", holder: "" },
   banners: { sideA: await image("h_ltower"), sideB: await image("h_pro16"), sideATitleAr: "أجهزة الألعاب", sideATitleEn: "Gaming rigs", sideATextAr: "Legion و Alienware و OMEN", sideATextEn: "Legion, Alienware and OMEN", sideALink: "/category/gaming", sideBTitleAr: "لابتوبات الأعمال", sideBTitleEn: "Business laptops", sideBTextAr: "ThinkPad و EliteBook و Dell Pro", sideBTextEn: "ThinkPad, EliteBook and Dell Pro", sideBLink: "/category/laptops?sub=business" },
@@ -127,6 +127,7 @@ const defaults = {
 for (const [k, v] of Object.entries(defaults)) await q("INSERT INTO settings (key,value) VALUES ($1,$2) ON CONFLICT (key) DO NOTHING", [k, JSON.stringify(v)]);
 // Store contact email moved to the store's own domain.
 await q(`UPDATE settings SET value=jsonb_set(value,'{email}','"info@entaliq-store.com"') WHERE key='store' AND value->>'email'='info@entaliq.com.sa'`);
+await q(`UPDATE settings SET value=jsonb_set(value,'{phone}','"+966 55 335 5395"') WHERE key='store' AND value->>'phone'='+966 5X XXX XXXX'`);
 
 const pages = JSON.parse(fs.readFileSync(path.join(here, "pages.json"), "utf8"));
 for (const p of pages) await q("INSERT INTO pages (slug,title_ar,title_en,body_ar,body_en) VALUES ($1,$2,$3,$4,$5) ON CONFLICT (slug) DO NOTHING", p);

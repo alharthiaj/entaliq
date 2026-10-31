@@ -39,7 +39,7 @@ export default function Footer({ lang, store }: { lang: Lang; store: StoreSettin
         </ul></div>
         <div><h4>{tr.fContact}</h4><ul>
           <li>{lang === "ar" ? store.addressAr : store.addressEn}</li>
-          {store.phone && <li className="num" dir="ltr" style={{ textAlign: "start" }}>{store.phone}</li>}
+          {store.phone && <li className="num" dir="ltr" style={{ textAlign: "start" }}><a href={`tel:${store.phone.replace(/[^\d+]/g, "")}`}>{store.phone}</a></li>}
           {store.whatsapp && <li><a href={`https://wa.me/${store.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>}
           {store.email && <li dir="ltr" style={{ textAlign: "start" }}><a href={`mailto:${store.email}`}>{store.email}</a></li>}
           <li>{lang === "ar" ? store.hoursAr : store.hoursEn}</li>
