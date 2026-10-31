@@ -41,7 +41,7 @@ export default function Footer({ lang, store }: { lang: Lang; store: StoreSettin
           <li>{lang === "ar" ? store.addressAr : store.addressEn}</li>
           {store.phone && <li className="num" dir="ltr" style={{ textAlign: "start" }}>{store.phone}</li>}
           {store.whatsapp && <li><a href={`https://wa.me/${store.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>}
-          {store.email && <li dir="ltr" style={{ textAlign: "start" }}>{store.email}</li>}
+          {store.email && <li dir="ltr" style={{ textAlign: "start" }}><a href={`mailto:${store.email}`}>{store.email}</a></li>}
           <li>{lang === "ar" ? store.hoursAr : store.hoursEn}</li>
         </ul></div>
       </div>
