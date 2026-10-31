@@ -12,6 +12,6 @@ export async function POST(req: Request) {
   if (qd.email && !/^\S+@\S+\.\S+$/.test(qd.email)) qd.email = "";
   await q("INSERT INTO quotes (name,company,phone,email,note) VALUES ($1,$2,$3,$4,$5)", [qd.name, qd.company, qd.phone, qd.email, qd.note]);
   // The request is already saved; email is a notification on top, so a mail failure never fails the form.
-  try { await sendMail(quoteEmail(qd, `${siteUrl()}/admin/quotes`)); } catch (e) { console.error("quote mail failed", e); }
+  try { await sendMail(quoteEmail(qd, `${siteUrl()}/admin/quotes`), { kind: "quote" }); } catch (e) { console.error("quote mail failed", e); }
   return NextResponse.json({ ok: true });
 }

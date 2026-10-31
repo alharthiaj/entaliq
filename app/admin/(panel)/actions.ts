@@ -7,6 +7,8 @@ import { requireAdmin } from "@/lib/auth";
 import { setSetting, getSetting, defaultStore, defaultShipping, defaultPayments, defaultBanners } from "@/lib/data";
 import { setOrderStatus, markPaid } from "@/lib/orders";
 import { slugify } from "@/lib/format";
+import { siteUrl } from "@/lib/env";
+import { defaultMail, encryptSecret, getMailSettings, sendMail, testEmail } from "@/lib/mail";
 
 const s = (fd: FormData, k: string, max = 2000) => String(fd.get(k) ?? "").trim().slice(0, max);
 const n = (fd: FormData, k: string) => { const v = String(fd.get(k) ?? "").replace(/[^\d.-]/g, ""); return v === "" ? null : Math.round(Number(v)); };
@@ -147,6 +149,33 @@ export async function saveSettings(fd: FormData) {
   await setSetting("shipping", { ...defaultShipping, flat: n(fd, "ship.flat") ?? 0, freeOver: n(fd, "ship.freeOver") ?? 0, codFee: n(fd, "ship.codFee") ?? 0, cities: lines(fd, "ship.cities") });
   await setSetting("payments", { ...defaultPayments, card: b(fd, "pay.card"), cod: b(fd, "pay.cod"), bank: b(fd, "pay.bank"), bankName: s(fd, "pay.bankName", 120), iban: s(fd, "pay.iban", 40).replace(/\s/g, "").toUpperCase(), holder: s(fd, "pay.holder", 160) });
   refresh(); redirect("/admin/settings?saved=1");
+}
+
+/* email notifications */
+export async function saveMail(fd: FormData) {
+  await requireAdmin("admin");
+  const cur = await getMailSettings();
+  const email = (v: string) => (/^\S+@\S+\.\S+$/.test(v) ? v.toLowerCase() : "");
+  const pass = String(fd.get("mail.pass") ?? "");
+  const next = {
+    ...defaultMail,
+    to: email(s(fd, "mail.to", 160)) || cur.to,
+    host: s(fd, "mail.host", 120).toLowerCase() || defaultMail.host,
+    port: n(fd, "mail.port") || 465,
+    user: email(s(fd, "mail.user", 160)) || cur.user,
+    // empty password field keeps the saved one; the clear box removes it
+    passEnc: b(fd, "mail.clear") ? "" : pass ? await encryptSecret(pass.slice(0, 200)) : cur.passEnc,
+    quotes: b(fd, "mail.quotes"),
+  };
+  await setSetting("mail", next);
+  redirect("/admin/settings?m=saved#mail");
+}
+export async function sendTestMail() {
+  await requireAdmin("admin");
+  let r = "mailfail";
+  try { r = (await sendMail(testEmail(`${siteUrl()}/admin`), { kind: "test" })) ? "mailok" : "mailnone"; }
+  catch (e) { console.error("test mail failed", e); }
+  redirect(`/admin/settings?m=${r}#mail`);
 }
 
 /* admin users */
